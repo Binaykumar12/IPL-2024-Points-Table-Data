@@ -1,0 +1,2 @@
+loop -> per page data -> title obtain return funcion-> print
+loop -> search 1. mobile, 2. watch, 3. laptop ->  title obtain return funcion
