@@ -1,32 +1,31 @@
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
-HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0',
-    'Accept-Language': 'en-US, en;q=0.5'
+
+# Define a single set of headers
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.5",
+    "Referer": "https://www.google.com",
+    "Connection": "keep-alive"
 }
-url="https://www.amazon.com/s?k=speaker"
-r=requests.get(url, headers=HEADERS)
-# print(r)
 
-soup=BeautifulSoup(r.content, "html.parser")
-print(soup)
-links= soup.find_all("span",attrs={'class': 'a-size-medium a-color-base a-text-normal'})
-links_list = [link.text for link in links if 'charge' not in link.text]
-# # print(table)
-# title=table.find_all("th")
-# # print(title)
+def extract_book_titles_and_prices(url):
+    # Make a request with the defined headers
+    response = requests.get(url, headers=headers)
 
-# header=[]
-for i in links_list:
-    name=i
-    print(name)
-#     header.append(name)
+    # Parse the HTML content using BeautifulSoup
+    soup = BeautifulSoup(response.text, 'lxml')
 
-# df= pd.DataFrame(columns=header)
-# print(df)
+    # Extract and print book titles and prices
+    books = soup.find_all('article', class_='product_pod')
+    for book in books:
+        book_title = book.h3.a['title']
+        book_price = book.find('p', class_='price_color').text
+        print(f"Title: {book_title}, Price: {book_price}")
 
-# rows= table.find_all("tr")
-# for i in rows[1:]:
-#     data=i.find_all("td")
-#     print("data")
+# URL to scrape
+url = "https://books.toscrape.com/catalogue/page-2.html"
+
+# Call the function to extract and print book titles and prices
+extract_book_titles_and_prices(url)
