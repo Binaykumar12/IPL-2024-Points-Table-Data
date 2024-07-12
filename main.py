@@ -10,7 +10,7 @@ headers = {
     "Connection": "keep-alive"
 }
 
-def extract_book_titles_and_prices(ur
+def extract_book_titles_and_prices(u
     # Make a request with the defined headers
     response = requests.get(url, headers=headers)
 
